@@ -5,6 +5,7 @@
         <p class="card__price">
             <Price :value="price" />
         </p>
+        <p class="card__sales" v-if="sales !== undefined">Продано: {{ sales }}</p>
         <button class="card__button">Добавить в корзину</button>
     </div>
 </template>
@@ -14,6 +15,9 @@ import Price from '@/components/Price.vue'
 
 export default {
     name: 'ProductCard',
+    props: {
+        sales: Number,
+    },
     components: {
         Price,
     },
@@ -21,7 +25,7 @@ export default {
         return {
             price: 1e4 + Math.floor(Math.random() * 8e4)
         }
-    }
+    },
 };
 </script>
 
@@ -55,10 +59,11 @@ export default {
         height: 64px;
         font-size: 40px;
         line-height: 64px;
+    }
 
-        &-currency {
-            font-size: 24px;
-        }
+    &__sales {
+        grid-column: 1 / 3;
+        font-size: 1.25rem;
     }
 
     &__button {
