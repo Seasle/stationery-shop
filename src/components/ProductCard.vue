@@ -6,12 +6,19 @@
             <Price :value="price" />
         </p>
         <p class="card__sales" v-if="sales !== undefined">Продано: {{ sales }}</p>
-        <button class="card__button">Добавить в корзину</button>
+        <button class="card__button">
+            <IconBase class="card__button-icon">
+                <BoxIcon />
+            </IconBase>
+            Добавить в корзину
+        </button>
     </div>
 </template>
 
 <script>
 import Price from '@/components/Price.vue'
+import IconBase from '@/components/IconBase.vue';
+import BoxIcon from '@/components/icons/BoxIcon.vue';
 
 export default {
     name: 'ProductCard',
@@ -20,6 +27,8 @@ export default {
     },
     components: {
         Price,
+        IconBase,
+        BoxIcon,
     },
     data() {
         return {
@@ -72,6 +81,9 @@ export default {
         border: none;
         border-radius: 4px;
         grid-column: 1 / 3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: 0.875rem;
         font-family: inherit;
         background: #eeeeee;
@@ -82,8 +94,15 @@ export default {
         }
 
         &:focus {
-            text-decoration: underline;
             outline: none;
+
+            &.focus-visible {
+                text-decoration: underline;
+            }
+        }
+
+        &-icon {
+            margin-right: 8px;
         }
     }
 }

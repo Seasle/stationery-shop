@@ -7,39 +7,85 @@
                 v-for="catalog in catalogs"
                 @click="() => setCatalog(catalog)"
                 :key="catalog.key"
-            >{{ catalog.text }}</button>
+            >
+                <IconBase class="catalog__button-icon" v-if="catalog.icon" width="20" height="20">
+                    <component :is="catalog.icon" />
+                </IconBase>
+                {{ catalog.text }}
+            </button>
         </div>
         <div class="catalog__content">
             <h2 class="catalog__title">Каталог</h2>
             <div class="catalog__grid">
                 <ProductCard v-for="(product, index) in products" :key="index" />
             </div>
+            <a class="catalog__link">Показать еще</a>
         </div>
     </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, markRaw } from 'vue';
 import ProductCard from '@/components/ProductCard.vue';
+import IconBase from '@/components/IconBase.vue';
+import NotebookIcon from '@/components/icons/NotebookIcon.vue';
+import DiaryIcon from '@/components/icons/DiaryIcon.vue';
+import PapersIcon from '@/components/icons/PapersIcon.vue';
+import RulerIcon from '@/components/icons/RulerIcon.vue';
+import ProtractorIcon from '@/components/icons/ProtractorIcon.vue';
+import PencilCaseIcon from '@/components/icons/PencilCaseIcon.vue';
+import PencilIcon from '@/components/icons/PencilIcon.vue';
+import ChalkIcon from '@/components/icons/ChalkIcon.vue';
 import Catalog from '@/constants/Catalog.js';
 
 const Catalogs = [
-    { key: Catalog.Notebooks, text: 'Тетради' },
-    { key: Catalog.Diaries, text: 'Дневники' },
-    { key: Catalog.Paper, text: 'Бумага' },
-    { key: Catalog.PencilCases, text: 'Пеналы' },
-    { key: Catalog.Backpacks, text: 'Рюкзаки' },
-    { key: Catalog.BookHolders, text: 'Подставки для книг' },
-    { key: Catalog.Rulers, text: 'Линейки' },
-    { key: Catalog.Triangles, text: 'Треугольники' },
-    { key: Catalog.Protractors, text: 'Транспортиры' },
-    { key: Catalog.Chalk, text: 'Мел' },
+    {
+        key: Catalog.Notebooks,
+        text: 'Тетради',
+        icon: markRaw(NotebookIcon),
+    },
+    {
+        key: Catalog.Diaries,
+        text: 'Дневники',
+        icon: markRaw(DiaryIcon),
+    },
+    {
+        key: Catalog.Papers,
+        text: 'Бумага',
+        icon: markRaw(PapersIcon),
+    },
+    {
+        key: Catalog.PencilCases,
+        text: 'Пеналы',
+        icon: markRaw(PencilCaseIcon),
+    },
+    {
+        key: Catalog.Pencils,
+        text: 'Карандаши',
+        icon: markRaw(PencilIcon),
+    },
+    {
+        key: Catalog.Rulers,
+        text: 'Линейки',
+        icon: markRaw(RulerIcon),
+    },
+    {
+        key: Catalog.Protractors,
+        text: 'Транспортиры',
+        icon: markRaw(ProtractorIcon),
+    },
+    {
+        key: Catalog.Chalk,
+        text: 'Мел',
+        icon: markRaw(ChalkIcon),
+    },
 ];
 
 export default {
     name: 'Catalog',
     components: {
         ProductCard,
+        IconBase,
     },
     setup() {
         return {
@@ -122,16 +168,20 @@ export default {
         padding: 12px 16px;
         border: none;
         border-radius: 4px;
+        display: flex;
+        align-items: center;
         font: inherit;
         text-align: left;
         background: transparent;
         color: #ffffff;
         transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
 
-
         &:focus {
-            text-decoration: underline;
             outline: none;
+
+            &.focus-visible {
+                text-decoration: underline;
+            }
         }
 
         &:hover {
@@ -154,6 +204,34 @@ export default {
                             0 8px 16px 0 rgba(255, 255, 255, 0.1),
                             0 16px 32px 0 rgba(255, 255, 255, 0.05);
             }
+        }
+
+        &-icon {
+            margin-right: 8px;
+            transition: fill 0.1s ease-in-out;
+        }
+    }
+
+    &__link {
+        padding: 12px 16px;
+        border-radius: 4px;
+        justify-self: start;
+        font: inherit;
+        background: #ffffff;
+        color: #111111;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15),
+                    0 2px 4px 0 rgba(0, 0, 0, 0.1),
+                    0 4px 8px 0 rgba(0, 0, 0, 0.05);
+        transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+
+        &:focus {
+            &.focus-visible {
+                text-decoration: underline;
+            }
+        }
+
+        &[href]:hover {
+            background: var(--primary-color);
         }
     }
 }

@@ -1,14 +1,12 @@
 const Catalog = {
     Notebooks: 1,
     Diaries: 2,
-    Paper: 3,
+    Papers: 3,
     PencilCases: 4,
-    Backpacks: 5,
-    BookHolders: 6,
-    Rulers: 7,
-    Triangles: 8,
-    Protractors: 9,
-    Chalk: 10,
+    Pencils: 5,
+    Rulers: 6,
+    Protractors: 7,
+    Chalk: 8,
 };
 
 export default Catalog;
