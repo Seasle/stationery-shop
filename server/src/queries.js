@@ -4,13 +4,14 @@ export const getProducts = key => `
         ${key}Images.Path as Preview
     FROM ${key}
     LEFT JOIN ${key}Images
-    ON ${key}.Id = ${key}Images.Product;
+    ON ${key}.Id = ${key}Images.Product
+    GROUP BY ${key}.Id;
 `;
 
 export const getProduct = key => `
     SELECT *
     FROM ${key}
-    WHERE Id = ?
+    WHERE Id = ?;
 `;
 
 export const getImages = key => `
@@ -18,5 +19,5 @@ export const getImages = key => `
         Id,
         Path
     FROM ${key}Images
-    WHERE Product = ?
+    WHERE Product = ?;
 `;
