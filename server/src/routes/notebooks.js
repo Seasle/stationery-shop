@@ -11,6 +11,12 @@ export default (fastify, options, done) => {
         reply.send(mapper(data));
     });
 
+    fastify.get('/top', async (request, reply) => {
+        const data = await db.all(queries.getFirstProducts);
+
+        reply.send(mapper(data));
+    });
+
     fastify.get('/:id', async (request, reply) => {
         const data = await db.get(queries.getProduct, request.params.id);
         const images = await db.all(queries.getImages, request.params.id);

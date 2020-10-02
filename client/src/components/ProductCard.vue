@@ -1,9 +1,10 @@
 <template>
     <div class="card">
-        <h3 class="card__title">Товар</h3>
-        <div class="card__image"></div>
+        <h3 class="card__title">{{ data.name }}</h3>
+        <img class="card__image" :src="image" alt="" v-if="image !== null" />
+        <div class="card__image" v-if="image === null"></div>
         <p class="card__price">
-            <Price :value="price" />
+            <Price :value="data.price" />
         </p>
         <p class="card__sales" v-if="sales !== undefined">Продано: {{ sales }}</p>
         <button class="card__button">
@@ -16,13 +17,21 @@
 </template>
 
 <script>
-import Price from '@/components/Price.vue'
+import Price from '@/components/Price.vue';
 import IconBase from '@/components/IconBase.vue';
 import BoxIcon from '@/components/icons/BoxIcon.vue';
 
 export default {
     name: 'ProductCard',
     props: {
+        data: {
+            type: Object,
+            default: () => ({
+                name: 'Нет названия товара',
+                price: 0,
+                preview: null,
+            }),
+        },
         sales: Number,
     },
     components: {
@@ -30,10 +39,14 @@ export default {
         IconBase,
         BoxIcon,
     },
-    data() {
-        return {
-            price: 1e4 + Math.floor(Math.random() * 8e4)
-        }
+    computed: {
+        image() {
+            if (this.data.preview !== null) {
+                return `http://127.0.0.1:3000/image/${this.data.preview}`;
+            } else {
+                return null;
+            }
+        },
     },
 };
 </script>
@@ -47,10 +60,8 @@ export default {
     grid-template-columns: max-content 1fr;
     grid-auto-rows: max-content;
     background: #ffffff;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2),
-                0 2px 4px 0 rgba(0, 0, 0, 0.15),
-                0 4px 8px 0 rgba(0, 0, 0, 0.1),
-                0 8px 16px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.15),
+        0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 8px 16px 0 rgba(0, 0, 0, 0.05);
 
     &__title {
         font-size: 1.5rem;
@@ -61,7 +72,11 @@ export default {
         width: 64px;
         height: 64px;
         border-radius: 4px;
-        background: #cccccc;
+        object-fit: contain;
+
+        &:not([src]) {
+            background: #cccccc;
+        }
     }
 
     &__price {

@@ -1,3 +1,14 @@
+export const getFirstProducts = key => `
+    SELECT
+        ${key}.*,
+        ${key}Images.Path as Preview
+    FROM ${key}
+    LEFT JOIN ${key}Images
+    ON ${key}.Id = ${key}Images.Product
+    GROUP BY ${key}.Id
+    LIMIT 4;
+`;
+
 export const getProducts = key => `
     SELECT
         ${key}.*,

@@ -35,9 +35,9 @@ export const mapper = data => {
 };
 
 /**
- *
- * @param {string} namespace
- * @param {Object<string, T>} queries
+ * Подставляет необходимые таблицы в SQL запросы.
+ * @param {string} namespace Пространство имен
+ * @param {Object<string, T>} queries Объект с шаблонами запросов
  * @returns {Object<string, string>}
  *
  * @template T

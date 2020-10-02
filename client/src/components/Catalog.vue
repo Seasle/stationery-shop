@@ -3,9 +3,9 @@
         <div class="catalog__menu">
             <button
                 class="catalog__button"
-                :class="{ 'catalog__button--active': selectedCatalog?.key === catalog.key }"
+                :class="{ 'catalog__button--active': selectedCatalog === catalog.key }"
                 v-for="catalog in catalogs"
-                @click="() => setCatalog(catalog)"
+                @click="() => setCatalog(catalog.key)"
                 :key="catalog.key"
             >
                 <IconBase class="catalog__button-icon" v-if="catalog.icon" width="20" height="20">
@@ -17,7 +17,7 @@
         <div class="catalog__content">
             <h2 class="catalog__title">Каталог</h2>
             <div class="catalog__grid">
-                <ProductCard v-for="(product, index) in products" :key="index" />
+                <ProductCard v-for="(product, index) in products" :data="product" :key="index" />
             </div>
             <a class="catalog__link">Показать еще</a>
         </div>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { ref, markRaw } from 'vue';
+import { ref, watchEffect, markRaw } from 'vue';
 import ProductCard from '@/components/ProductCard.vue';
 import IconBase from '@/components/IconBase.vue';
 import NotebookIcon from '@/components/icons/NotebookIcon.vue';
@@ -37,6 +37,7 @@ import PencilCaseIcon from '@/components/icons/PencilCaseIcon.vue';
 import PencilIcon from '@/components/icons/PencilIcon.vue';
 import ChalkIcon from '@/components/icons/ChalkIcon.vue';
 import Catalog from '@/constants/Catalog.js';
+import { get } from '@/api';
 
 const Catalogs = [
     {
@@ -88,13 +89,32 @@ export default {
         IconBase,
     },
     setup() {
+        const selectedCatalog = ref(Catalog.Notebooks);
+        const products = ref([]);
+
+        watchEffect(onInvalidate => {
+            const [response, controller] = get(`${selectedCatalog.value}/top`);
+
+            response.then(data => {
+                if (data?.statusCode === 404) {
+                    products.value = [];
+                } else {
+                    products.value = data;
+                }
+            });
+
+            onInvalidate(() => {
+                controller.abort();
+            });
+        });
+
         return {
-            selectedCatalog: ref(Catalogs[0])
+            selectedCatalog,
+            products,
         };
     },
     data() {
         return {
-            products: new Array(4),
             catalogs: Catalogs,
         };
     },
@@ -118,8 +138,7 @@ export default {
         display: grid;
         grid-auto-rows: max-content;
         background: #111111;
-        box-shadow: 1px 0 2px 0 rgba(0, 0, 0, 0.1),
-                    2px 0 4px 0 rgba(0, 0, 0, 0.05);
+        box-shadow: 1px 0 2px 0 rgba(0, 0, 0, 0.1), 2px 0 4px 0 rgba(0, 0, 0, 0.05);
         overflow: auto;
         z-index: 2;
     }
@@ -174,7 +193,8 @@ export default {
         text-align: left;
         background: transparent;
         color: #ffffff;
-        transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+        transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out,
+            box-shadow 0.1s ease-in-out;
 
         &:focus {
             outline: none;
@@ -191,18 +211,14 @@ export default {
         &--active {
             background: #ffffff;
             color: #111111;
-            box-shadow: 0 1px 2px 0 rgba(255, 255, 255, 0.2),
-                        0 2px 4px 0 rgba(255, 255, 255, 0.15),
-                        0 4px 8px 0 rgba(255, 255, 255, 0.1),
-                        0 8px 16px 0 rgba(255, 255, 255, 0.05);
+            box-shadow: 0 1px 2px 0 rgba(255, 255, 255, 0.2), 0 2px 4px 0 rgba(255, 255, 255, 0.15),
+                0 4px 8px 0 rgba(255, 255, 255, 0.1), 0 8px 16px 0 rgba(255, 255, 255, 0.05);
 
             &:hover {
                 background: #ffffff;
                 box-shadow: 0 1px 2px 0 rgba(255, 255, 255, 0.25),
-                            0 2px 4px 0 rgba(255, 255, 255, 0.2),
-                            0 4px 8px 0 rgba(255, 255, 255, 0.15),
-                            0 8px 16px 0 rgba(255, 255, 255, 0.1),
-                            0 16px 32px 0 rgba(255, 255, 255, 0.05);
+                    0 2px 4px 0 rgba(255, 255, 255, 0.2), 0 4px 8px 0 rgba(255, 255, 255, 0.15),
+                    0 8px 16px 0 rgba(255, 255, 255, 0.1), 0 16px 32px 0 rgba(255, 255, 255, 0.05);
             }
         }
 
@@ -219,10 +235,10 @@ export default {
         font: inherit;
         background: #ffffff;
         color: #111111;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15),
-                    0 2px 4px 0 rgba(0, 0, 0, 0.1),
-                    0 4px 8px 0 rgba(0, 0, 0, 0.05);
-        transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15), 0 2px 4px 0 rgba(0, 0, 0, 0.1),
+            0 4px 8px 0 rgba(0, 0, 0, 0.05);
+        transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out,
+            box-shadow 0.1s ease-in-out;
 
         &:focus {
             &.focus-visible {

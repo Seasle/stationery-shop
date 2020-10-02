@@ -1,5 +1,5 @@
 const Catalog = {
-    Notebooks: 1,
+    Notebooks: 'notebooks',
     Diaries: 2,
     Papers: 3,
     PencilCases: 4,
