@@ -33,14 +33,3 @@ export const mapper = data => {
 
     return isArray ? mapped : mapped[0];
 };
-
-/**
- * Подставляет необходимые таблицы в SQL запросы.
- * @param {string} namespace Пространство имен
- * @param {Object<string, T>} queries Объект с шаблонами запросов
- * @returns {Object<string, string>}
- *
- * @template T
- */
-export const bindQueries = (namespace, queries) =>
-    Object.fromEntries(Object.entries(queries).map(([key, query]) => [key, query(namespace)]));

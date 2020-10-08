@@ -93,7 +93,7 @@ export default {
         const products = ref([]);
 
         watchEffect(onInvalidate => {
-            const [response, controller] = get(`${selectedCatalog.value}/top`);
+            const [response, controller] = get(`products/${selectedCatalog.value}/top`);
 
             response.then(data => {
                 if (data?.statusCode === 404) {

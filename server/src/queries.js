@@ -1,34 +1,63 @@
-export const getFirstProducts = key => `
+export const getAllProducts = `
     SELECT
-        ${key}.*,
-        ${key}Images.Path as Preview
-    FROM ${key}
-    LEFT JOIN ${key}Images
-    ON ${key}.Id = ${key}Images.Product
-    GROUP BY ${key}.Id
+        Product.Id,
+        Product.Name,
+        Product.Description,
+        Product.Price,
+        Product.Sales,
+        Image.Path as Preview
+    FROM Product
+    LEFT JOIN Image
+    ON Product.Id = Image.Product
+    GROUP BY Product.Id;
+`;
+
+export const getFirstProducts = `
+    SELECT
+        Product.Id,
+        Product.Name,
+        Product.Description,
+        Product.Price,
+        Product.Sales,
+        Image.Path as Preview
+    FROM Product
+    LEFT JOIN Image
+    ON Product.Id = Image.Product
+    WHERE Product.Category = ?
+    GROUP BY Product.Id
     LIMIT 4;
 `;
 
-export const getProducts = key => `
+export const getProducts = `
     SELECT
-        ${key}.*,
-        ${key}Images.Path as Preview
-    FROM ${key}
-    LEFT JOIN ${key}Images
-    ON ${key}.Id = ${key}Images.Product
-    GROUP BY ${key}.Id;
+        Product.Id,
+        Product.Name,
+        Product.Description,
+        Product.Price,
+        Product.Sales,
+        Image.Path as Preview
+    FROM Product
+    LEFT JOIN Image
+    ON Product.Id = Image.Product
+    WHERE Product.Category = ?
+    GROUP BY Product.Id;
 `;
 
-export const getProduct = key => `
-    SELECT *
-    FROM ${key}
+export const getProduct = `
+    SELECT
+        Id,
+        Name,
+        Description,
+        Price,
+        Sales
+    FROM Product
     WHERE Id = ?;
 `;
 
-export const getImages = key => `
+export const getImages = `
     SELECT
         Id,
         Path
-    FROM ${key}Images
+    FROM Image
     WHERE Product = ?;
 `;
