@@ -19,71 +19,21 @@
             <div class="catalog__grid">
                 <ProductCard v-for="(product, index) in products" :data="product" :key="index" />
             </div>
-            <a class="catalog__link">Показать еще</a>
+            <router-link class="catalog__link" :to="catalogURL">Показать еще</router-link>
         </div>
     </div>
 </template>
 
 <script>
-import { ref, watchEffect, markRaw } from 'vue';
+import { ref, watchEffect } from 'vue';
 import ProductCard from '@/components/ProductCard.vue';
 import IconBase from '@/components/IconBase.vue';
-import NotebookIcon from '@/components/icons/NotebookIcon.vue';
-import DiaryIcon from '@/components/icons/DiaryIcon.vue';
-import PapersIcon from '@/components/icons/PapersIcon.vue';
-import RulerIcon from '@/components/icons/RulerIcon.vue';
-import ProtractorIcon from '@/components/icons/ProtractorIcon.vue';
-import PencilCaseIcon from '@/components/icons/PencilCaseIcon.vue';
-import PencilIcon from '@/components/icons/PencilIcon.vue';
-import ChalkIcon from '@/components/icons/ChalkIcon.vue';
 import Catalog from '@/constants/Catalog.js';
+import Catalogs from '@/constants/Catalogs.js';
 import { get } from '@/api';
 
-const Catalogs = [
-    {
-        key: Catalog.Notebooks,
-        text: 'Тетради',
-        icon: markRaw(NotebookIcon),
-    },
-    {
-        key: Catalog.Diaries,
-        text: 'Дневники',
-        icon: markRaw(DiaryIcon),
-    },
-    {
-        key: Catalog.Papers,
-        text: 'Бумага',
-        icon: markRaw(PapersIcon),
-    },
-    {
-        key: Catalog.PencilCases,
-        text: 'Пеналы',
-        icon: markRaw(PencilCaseIcon),
-    },
-    {
-        key: Catalog.Pencils,
-        text: 'Карандаши',
-        icon: markRaw(PencilIcon),
-    },
-    {
-        key: Catalog.Rulers,
-        text: 'Линейки',
-        icon: markRaw(RulerIcon),
-    },
-    {
-        key: Catalog.Protractors,
-        text: 'Транспортиры',
-        icon: markRaw(ProtractorIcon),
-    },
-    {
-        key: Catalog.Chalk,
-        text: 'Мел',
-        icon: markRaw(ChalkIcon),
-    },
-];
-
 export default {
-    name: 'Catalog',
+    name: 'MiniCatalog',
     components: {
         ProductCard,
         IconBase,
@@ -117,6 +67,11 @@ export default {
         return {
             catalogs: Catalogs,
         };
+    },
+    computed: {
+        catalogURL() {
+            return `/catalog/${this.selectedCatalog}`;
+        },
     },
     methods: {
         setCatalog(catalog) {

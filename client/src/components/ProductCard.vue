@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <h3 class="card__title">{{ data.name }}</h3>
+        <h3 class="card__title" :title="data.name">{{ data.name }}</h3>
         <img class="card__image" :src="image" alt="" v-if="image !== null" />
         <div class="card__image" v-if="image === null"></div>
         <p class="card__price">
@@ -66,6 +66,9 @@ export default {
     &__title {
         font-size: 1.5rem;
         grid-column: 1 / 3;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     &__image {
