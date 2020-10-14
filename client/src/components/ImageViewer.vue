@@ -1,7 +1,7 @@
 <template>
     <div class="viewer">
         <div class="viewer__container">
-            <img class="viewer__image" :src="previewURLs[current]" alt="">
+            <img class="viewer__image" :src="previewURLs[current]" alt="" v-if="previewURLs.length > 0">
         </div>
         <div class="viewer__previews">
             <button
