@@ -61,6 +61,22 @@ export const getTotalProducts = `
     WHERE Product.Category = ?;
 `;
 
+export const getPopularProducts = `
+    SELECT
+        Product.Id,
+        Product.Name,
+        Product.Description,
+        Product.Price,
+        Product.Sales,
+        Image.Path as Preview
+    FROM Product
+    LEFT JOIN Image
+    ON Product.Id = Image.Product
+    GROUP BY Product.Id
+    ORDER BY Product.Sales DESC
+    LIMIT 40;
+`;
+
 export const getImages = `
     SELECT
         Id,

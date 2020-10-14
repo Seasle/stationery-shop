@@ -9,6 +9,12 @@ export default (fastify, options, done) => {
         reply.send(mapper(data));
     });
 
+    fastify.get('/popular', async (request, reply) => {
+        const data = await db.all(queries.getPopularProducts);
+
+        reply.send(mapper(data));
+    });
+
     fastify.get('/:category/top', async (request, reply) => {
         const data = await db.all(queries.getFirstProducts, request.params.category);
 

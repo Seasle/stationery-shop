@@ -3,27 +3,45 @@
         <h2 class="container__title">Популярные товары</h2>
         <div class="container__grid">
             <template v-for="(product, index) in products" :key="index">
-                <ProductCard :sales="product" />
+                <ProductCard :data="product" :sales="product.sales" />
             </template>
         </div>
     </div>
 </template>
 
 <script>
+import { ref, watchEffect } from 'vue';
 import ProductCard from '@/components/ProductCard';
+import { get } from '@/api';
 
 export default {
     name: 'PopularProducts',
     components: {
         ProductCard,
     },
-    data() {
+    setup() {
+        const products = ref([]);
+
         return {
-            products: new Array(40)
-                .fill(null)
-                .map(() => 5 + Math.floor(Math.random() * 50))
-                .sort((a, b) => b - a),
+            products,
         };
+    },
+    mounted() {
+        watchEffect(onInvalidate => {
+            const [response, controller] = get('products/popular');
+
+            response.then(response => {
+                if (response?.statusCode === 404) {
+                    this.products = [];
+                } else {
+                    this.products = response;
+                }
+            });
+
+            onInvalidate(() => {
+                controller.abort();
+            });
+        });
     },
 };
 </script>
