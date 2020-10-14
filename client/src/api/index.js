@@ -9,3 +9,5 @@ export const get = url => {
 
     return [fetch(request).then(response => response.json()), controller];
 };
+
+export const image = id => `${BASE}/image/${id}`;

@@ -6,3 +6,5 @@ export { default as ProtractorIcon } from './ProtractorIcon.vue';
 export { default as PencilCaseIcon } from './PencilCaseIcon.vue';
 export { default as PencilIcon } from './PencilIcon.vue';
 export { default as ChalkIcon } from './ChalkIcon.vue';
+export { default as LeftArrowIcon } from './LeftArrowIcon.vue';
+export { default as RightArrowIcon } from './RightArrowIcon.vue';

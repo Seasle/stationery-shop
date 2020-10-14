@@ -40,7 +40,8 @@ export const getProducts = `
     LEFT JOIN Image
     ON Product.Id = Image.Product
     WHERE Product.Category = ?
-    GROUP BY Product.Id;
+    GROUP BY Product.Id
+    LIMIT 8 OFFSET 8 * ?;
 `;
 
 export const getProduct = `
@@ -52,6 +53,12 @@ export const getProduct = `
         Sales
     FROM Product
     WHERE Id = ?;
+`;
+
+export const getTotalProducts = `
+    SELECT COUNT(*) AS Total
+    FROM Product
+    WHERE Product.Category = ?;
 `;
 
 export const getImages = `

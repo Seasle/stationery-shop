@@ -16,9 +16,19 @@ export default (fastify, options, done) => {
     });
 
     fastify.get('/:category', async (request, reply) => {
-        const data = await db.all(queries.getProducts, request.params.category);
+        const total = await db.get(queries.getTotalProducts, request.params.category);
+        const data = await db.all(
+            queries.getProducts,
+            request.params.category,
+            Number(request.query.page) || 0
+        );
 
-        reply.send(mapper(data));
+        reply.send(
+            mapper({
+                ...total,
+                data,
+            })
+        );
     });
 
     // TODO Вынести в отдельный модуль

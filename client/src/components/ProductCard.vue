@@ -1,6 +1,8 @@
 <template>
     <div class="card">
-        <h3 class="card__title" :title="data.name">{{ data.name }}</h3>
+        <h3 class="card__title" :title="data.name">
+            <router-link class="card__link" :to="productURL">{{ data.name }}</router-link>
+        </h3>
         <img class="card__image" :src="image" alt="" v-if="image !== null" />
         <div class="card__image" v-if="image === null"></div>
         <p class="card__price">
@@ -20,6 +22,7 @@
 import Price from '@/components/Price.vue';
 import IconBase from '@/components/IconBase.vue';
 import BoxIcon from '@/components/icons/BoxIcon.vue';
+import { image } from '@/api';
 
 export default {
     name: 'ProductCard',
@@ -40,9 +43,12 @@ export default {
         BoxIcon,
     },
     computed: {
+        productURL() {
+            return `/product/${this.data.id}`;
+        },
         image() {
             if (this.data.preview !== null) {
-                return `http://127.0.0.1:3000/image/${this.data.preview}`;
+                return image(this.data.preview);
             } else {
                 return null;
             }
@@ -60,8 +66,10 @@ export default {
     grid-template-columns: max-content 1fr;
     grid-auto-rows: max-content;
     background: #ffffff;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.15),
-        0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 8px 16px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2),
+                0 2px 4px 0 rgba(0, 0, 0, 0.15),
+                0 4px 8px 0 rgba(0, 0, 0, 0.1),
+                0 8px 16px 0 rgba(0, 0, 0, 0.05);
 
     &__title {
         font-size: 1.5rem;
@@ -121,6 +129,15 @@ export default {
 
         &-icon {
             margin-right: 8px;
+        }
+    }
+
+    &__link {
+        color: inherit;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
         }
     }
 }
