@@ -56,7 +56,7 @@ export default {
             onInvalidate(() => {
                 controller.abort();
             });
-        });
+        }, { flush: 'post' });
 
         return {
             selectedCatalog,

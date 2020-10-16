@@ -75,7 +75,7 @@ export default {
             onInvalidate(() => {
                 controller.abort();
             });
-        });
+        }, { flush: 'post' });
     },
     computed: {
         title() {
@@ -160,11 +160,14 @@ export default {
 
         &:focus {
             outline: none;
-            background: var(--primary-color);
 
             &.focus-visible {
                 text-decoration: underline;
             }
+        }
+
+        &:active {
+            background: var(--primary-color);
         }
     }
 }

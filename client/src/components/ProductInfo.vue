@@ -68,10 +68,7 @@ export default {
             onInvalidate(() => {
                 controller.abort();
             });
-        });
-    },
-    computed: {
-
+        }, { flush: 'post' });
     },
 };
 </script>
