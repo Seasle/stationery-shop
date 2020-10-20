@@ -87,6 +87,11 @@ export default {
     grid-template-columns: 320px 1fr;
     overflow: hidden;
 
+    @media screen and (max-width: 800px) {
+        grid-template-rows: max-content 1fr;
+        grid-template-columns: 1fr;
+    }
+
     &__menu {
         padding: 8px;
         gap: 8px;

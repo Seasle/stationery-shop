@@ -7,7 +7,12 @@
                 <p class="container__price">
                     <Price :value="data.price" />
                 </p>
-                <button class="container__button" aria-label="Добавить в корзину">
+                <button
+                    class="container__button"
+                    @click="addToCart"
+                    :disabled="inCart"
+                    aria-label="Добавить в корзину"
+                >
                     <IconBase class="container__button-icon">
                         <BoxIcon />
                     </IconBase>
@@ -22,11 +27,12 @@
 
 <script>
 import { ref, watchEffect } from 'vue';
+import { mapActions } from 'vuex';
 import ImageViewer from '@/components/ImageViewer.vue';
 import Price from '@/components/Price.vue';
 import IconBase from '@/components/IconBase.vue';
 import BoxIcon from '@/components/icons/BoxIcon.vue';
-import { get } from '@/api';
+import { get, post } from '@/api';
 
 export default {
     name: 'ProductInfo',
@@ -50,6 +56,19 @@ export default {
             ready,
             data,
         };
+    },
+    computed: {
+        inCart() {
+            return this.$store.state.cart.includes(this.data.id);
+        },
+    },
+    methods: {
+        ...mapActions(['updateCart']),
+        addToCart() {
+            const [response] = post('cart', { id: this.data.id });
+
+            response.then(cart => this.updateCart(cart));
+        }
     },
     mounted() {
         watchEffect(onInvalidate => {
@@ -124,7 +143,7 @@ export default {
                     0 32px 32px 0 rgba(0, 0, 0, 0.1);
         transition: background-color 0.1s ease-in-out;
 
-        &:hover {
+        &:not([disabled]):hover {
             background: var(--primary-color);
         }
 

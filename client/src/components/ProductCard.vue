@@ -9,20 +9,27 @@
             <Price :value="data.price" />
         </p>
         <p class="card__sales" v-if="sales !== undefined">Продано: {{ sales }}</p>
-        <button class="card__button">
+        <button class="card__button" @click="() => addToCart(data.id)" v-if="!cart.includes(data.id)">
             <IconBase class="card__button-icon">
                 <BoxIcon />
             </IconBase>
             Добавить в корзину
         </button>
+        <button class="card__button" disabled v-if="cart.includes(data.id)">
+            <IconBase class="card__button-icon">
+                <BoxIcon />
+            </IconBase>
+            В корзине
+        </button>
     </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import Price from '@/components/Price.vue';
 import IconBase from '@/components/IconBase.vue';
 import BoxIcon from '@/components/icons/BoxIcon.vue';
-import { image } from '@/api';
+import { post, image } from '@/api';
 
 export default {
     name: 'ProductCard',
@@ -43,6 +50,9 @@ export default {
         BoxIcon,
     },
     computed: {
+        cart() {
+            return this.$store.state.cart;
+        },
         productURL() {
             return `/product/${this.data.id}`;
         },
@@ -53,6 +63,14 @@ export default {
                 return null;
             }
         },
+    },
+    methods: {
+        ...mapActions(['updateCart']),
+        addToCart(id) {
+            const [response] = post('cart', { id });
+
+            response.then(cart => this.updateCart(cart));
+        }
     },
 };
 </script>
@@ -115,7 +133,7 @@ export default {
         background: #eeeeee;
         transition: background-color 0.1s ease-in-out;
 
-        &:hover {
+        &:not([disabled]):hover {
             background: var(--primary-color);
         }
 

@@ -7,9 +7,12 @@
 </template>
 
 <script>
+import { watchEffect } from 'vue';
+import { mapActions } from 'vuex';
 import Header from '@/components/common/Header';
 import Wrapper from '@/components/common/Wrapper';
 import Footer from '@/components/common/Footer';
+import { get } from '@/api';
 
 export default {
     name: 'App',
@@ -17,6 +20,20 @@ export default {
         Header,
         Wrapper,
         Footer,
+    },
+    methods: {
+        ...mapActions(['updateCart'])
+    },
+    mounted() {
+        watchEffect(onInvalidate => {
+            const [response, controller] = get('cart');
+
+            response.then(cart => this.updateCart(cart));
+
+            onInvalidate(() => {
+                controller.abort();
+            });
+        }, { flush: 'post' });
     },
 };
 </script>
