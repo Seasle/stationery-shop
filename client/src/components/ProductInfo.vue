@@ -59,7 +59,7 @@ export default {
     },
     computed: {
         inCart() {
-            return this.$store.state.cart.includes(this.data.id);
+            return this.$store.getters.cart.includes(this.data.id);
         },
     },
     methods: {

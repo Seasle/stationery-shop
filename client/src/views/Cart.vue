@@ -1,9 +1,14 @@
 <template>
-    <h2>Заготовка страницы корзины</h2>
+    <CartList />
 </template>
 
 <script>
+import CartList from '@/components/CartList.vue';
+
 export default {
     name: 'Cart',
+    components: {
+        CartList,
+    }
 };
 </script>

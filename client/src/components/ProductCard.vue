@@ -28,7 +28,7 @@
 import { mapActions } from 'vuex';
 import Price from '@/components/Price.vue';
 import IconBase from '@/components/IconBase.vue';
-import BoxIcon from '@/components/icons/BoxIcon.vue';
+import { BoxIcon } from '@/components/icons';
 import { post, image } from '@/api';
 
 export default {
@@ -51,7 +51,7 @@ export default {
     },
     computed: {
         cart() {
-            return this.$store.state.cart;
+            return this.$store.getters.cart;
         },
         productURL() {
             return `/product/${this.data.id}`;

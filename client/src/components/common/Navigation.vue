@@ -22,7 +22,7 @@ export default {
     },
     computed: {
         cartSize() {
-            return this.$store.state.cart.length;
+            return Object.keys(this.$store.state.cart).length;
         },
         cartNotEmpty() {
             return this.cartSize !== 0;

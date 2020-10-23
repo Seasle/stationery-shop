@@ -8,3 +8,6 @@ export { default as PencilIcon } from './PencilIcon.vue';
 export { default as ChalkIcon } from './ChalkIcon.vue';
 export { default as LeftArrowIcon } from './LeftArrowIcon.vue';
 export { default as RightArrowIcon } from './RightArrowIcon.vue';
+export { default as BoxIcon } from './BoxIcon.vue';
+export { default as PlusIcon } from './PlusIcon.vue';
+export { default as MinusIcon } from './MinusIcon.vue';
